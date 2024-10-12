@@ -3,8 +3,8 @@ from transactions_repository import TransactionsRepository
 
 
 class CreateTransaction:
-    def __init__(self) -> None:
-        self._transactions_repository = TransactionsRepository()
+    def __init__(self, transaction_repository: TransactionsRepository) -> None:
+        self._transactions_repository = transaction_repository
 
     def execute(self, data: dict) -> Transaction:
         transaction = Transaction(**data)
