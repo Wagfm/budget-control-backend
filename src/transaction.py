@@ -2,12 +2,12 @@ import datetime as dt
 import uuid
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, PositiveFloat, field_validator
 
 
 class Transaction(BaseModel, extra="ignore"):
     id: str = Field(default_factory=uuid.uuid4)
-    amount: float = Field(gt=0),
+    amount: PositiveFloat
     date: dt.date = Field(default_factory=dt.date.today),
     type: Literal["income", "expense"]
     category: str
