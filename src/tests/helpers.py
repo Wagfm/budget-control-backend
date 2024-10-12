@@ -24,5 +24,11 @@ class FakeDataGenerator:
         return dt.date(year=year, month=month, day=random.randint(1, 30))
 
     @staticmethod
-    def float() -> float:
-        return random.random() * random.randint(1, 1_000)
+    def positive_float() -> float:
+        value = random.random() * random.randint(1, 1_000)
+        return value if value > 0 else 0.01
+
+    @staticmethod
+    def negative_float() -> float:
+        value = random.random() * - random.randint(1, 1_000)
+        return value if value < 0 else -0.01

@@ -14,21 +14,21 @@ class TestTransaction(unittest.TestCase):
 
     def test_valid_transaction(self) -> None:
         transaction_data_1 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": "income",
             "category": FakeDataGenerator.string(5),
             "description": None
         }
         transaction_data_2 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": "expense",
             "category": FakeDataGenerator.string(5),
             "description": None
         }
         transaction_data_3 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": "income",
             "category": FakeDataGenerator.string(5),
@@ -40,28 +40,28 @@ class TestTransaction(unittest.TestCase):
 
     def test_invalid_transaction(self) -> None:
         transaction_data_1 = {
-            "amount": 0.0,
+            "amount": FakeDataGenerator.negative_float(),
             "date": FakeDataGenerator.date(),
             "type": "income",
             "category": FakeDataGenerator.string(5),
             "description": None
         }
         transaction_data_2 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": FakeDataGenerator.string(3),
             "category": FakeDataGenerator.string(5),
             "description": None
         }
         transaction_data_3 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": "income",
             "category": FakeDataGenerator.string(5),
             "description": ""
         }
         transaction_data_4 = {
-            "amount": FakeDataGenerator.float(),
+            "amount": FakeDataGenerator.positive_float(),
             "date": FakeDataGenerator.date(),
             "type": "expense",
             "category": FakeDataGenerator.string(5),
