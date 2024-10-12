@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, PositiveFloat, field_validator
 
 
 class Transaction(BaseModel, extra="ignore"):
-    id: str = Field(default_factory=uuid.uuid4)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     amount: PositiveFloat
     date: dt.date = Field(default_factory=dt.date.today),
     type: Literal["income", "expense"]
