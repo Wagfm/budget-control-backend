@@ -34,10 +34,10 @@ class TransactionsRepository:
             transaction.description
         ]
         with self._pool.connection() as connection:
-            cursor = connection.cursor(row_factory=self._row_factory)
-            cursor.execute(query, parameters)
-            created_transaction_data = cursor.fetchone()
-            return Transaction(**created_transaction_data)
+            with connection.cursor(row_factory=self._row_factory) as cursor:
+                cursor.execute(query, parameters)
+                created_transaction_data = cursor.fetchone()
+                return Transaction(**created_transaction_data)
 
     def get_transaction(self, transaction_id: UUID) -> Transaction:
         query = """
@@ -45,9 +45,9 @@ class TransactionsRepository:
         """
         parameters = [transaction_id]
         with self._pool.connection() as connection:
-            cursor = connection.cursor(row_factory=self._row_factory)
-            cursor.execute(query, parameters)
-            transaction_data = cursor.fetchone()
-            if transaction_data is None:
-                raise NotFoundException("Transaction not found")
-            return Transaction(**transaction_data)
+            with connection.cursor(row_factory=self._row_factory) as cursor:
+                cursor.execute(query, parameters)
+                transaction_data = cursor.fetchone()
+                if transaction_data is None:
+                    raise NotFoundException("Transaction not found")
+                return Transaction(**transaction_data)
