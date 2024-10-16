@@ -1,21 +1,11 @@
 import os
-from collections.abc import Sequence
-from typing import Any
 from uuid import UUID
 
 import psycopg_pool as pgp
-from psycopg import Cursor
 
 from exceptions import NotFoundException
+from postgres_dict_row_factory import DictRowFactory
 from transaction import Transaction
-
-
-class DictRowFactory:
-    def __init__(self, cursor: Cursor[Any]):
-        self.fields = [c.name for c in cursor.description]
-
-    def __call__(self, values: Sequence[Any]) -> dict[str, Any]:
-        return dict(zip(self.fields, values))
 
 
 class TransactionsRepository:
@@ -23,6 +13,7 @@ class TransactionsRepository:
         self._row_factory = DictRowFactory
         self._url = os.getenv("POSTGRES_URL")
         self._pool = pgp.ConnectionPool(self._url, min_size=4, max_size=100, open=True)
+        self._create_table()
 
     def create_transaction(self, transaction: Transaction) -> Transaction:
         query = """
@@ -51,3 +42,26 @@ class TransactionsRepository:
                 if transaction_data is None:
                     raise NotFoundException("Transaction not found")
                 return Transaction(**transaction_data)
+
+    def clear(self) -> None:
+        query = """
+            DELETE FROM public.transactions;
+        """
+        with self._pool.connection() as connection:
+            with connection.cursor(row_factory=self._row_factory) as cursor:
+                cursor.execute(query)
+
+    def _create_table(self) -> None:
+        query = """
+            CREATE TABLE IF NOT EXISTS public.transactions (
+                id UUID PRIMARY KEY,
+                amount NUMERIC NOT NULL,
+                date DATE NOT NULL,
+                type VARCHAR(15) NOT NULL,
+                category VARCHAR(25) NOT NULL,
+                description VARCHAR(100)
+            );
+        """
+        with self._pool.connection() as connection:
+            with connection.cursor(row_factory=self._row_factory) as cursor:
+                cursor.execute(query)

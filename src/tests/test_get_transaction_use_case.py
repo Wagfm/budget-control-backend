@@ -10,11 +10,12 @@ from transactions_repository import TransactionsRepository
 
 class TestGetTransactionUseCase(unittest.TestCase):
     def setUp(self) -> None:
-        transactions_repository = TransactionsRepository()
-        self._create_transaction_use_case = CreateTransaction(transactions_repository)
-        self._get_transaction_use_case = GetTransaction(transactions_repository)
+        self._transactions_repository = TransactionsRepository()
+        self._create_transaction_use_case = CreateTransaction(self._transactions_repository)
+        self._get_transaction_use_case = GetTransaction(self._transactions_repository)
 
     def tearDown(self) -> None:
+        self._transactions_repository.clear()
         self._create_transaction_use_case = None
         self._get_transaction_use_case = None
 

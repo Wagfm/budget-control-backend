@@ -12,6 +12,7 @@ class TestTransactionsRepository(unittest.TestCase):
         self._repository = TransactionsRepository()
 
     def tearDown(self) -> None:
+        self._repository.clear()
         self._repository = None
 
     def test_create_transaction(self) -> None:

@@ -7,10 +7,11 @@ from transactions_repository import TransactionsRepository
 
 class TestCreateTransactionUseCase(unittest.TestCase):
     def setUp(self) -> None:
-        transactions_repository = TransactionsRepository()
-        self._create_transaction_use_case = CreateTransaction(transactions_repository)
+        self._transactions_repository = TransactionsRepository()
+        self._create_transaction_use_case = CreateTransaction(self._transactions_repository)
 
     def tearDown(self) -> None:
+        self._transactions_repository.clear()
         self._create_transaction_use_case = None
 
     def test_create_valid_transaction(self) -> None:
