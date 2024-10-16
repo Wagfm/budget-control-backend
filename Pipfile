@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-psycopg = { extras = ["pool", "binary"], version = "*" }
-pydantic = "*"
+psycopg = "==3.2.3"
+pydantic = "==2.9.2"
+psycopg-binary = "==3.2.3"
+psycopg-pool = "==3.2.3"
 
 [dev-packages]
-coverage = "*"
+coverage = "7.6.2"
 
 [requires]
 python_version = "3.13"
